@@ -1,5 +1,5 @@
 defmodule NucleotideCount do
-  @nucleotides %{?A => 0, ?C => 0, ?G => 0, ?T => 0}
+  @nucleotides [?A, ?C, ?G, ?T]
 
   @doc """
   Counts individual nucleotides in a DNA strand.
@@ -14,9 +14,7 @@ defmodule NucleotideCount do
   """
   @spec count([char], char) :: non_neg_integer
   def count(strand, nucleotide) do
-    strand 
-    |> Enum.reduce(@nucleotides, &collect/2)
-    |> find_occurrence(nucleotide)
+    Enum.count(strand, &(&1 == nucleotide))
   end
 
   @doc """
@@ -29,16 +27,6 @@ defmodule NucleotideCount do
   """
   @spec histogram([char]) :: map
   def histogram(strand) do
-    strand 
-    |> Enum.reduce(@nucleotides, &collect/2)
+    Map.new(@nucleotides, &({&1, count(strand, &1)}))
   end
-
-  defp collect(x, acc) do
-    cond do
-      acc[x] == nil -> Map.put_new(acc, x, 1)
-      true -> Map.put(acc, x, acc[x] + 1)
-    end
-  end
-
-  defp find_occurrence(acc, nucleotide), do: acc[nucleotide]
 end
