@@ -8,7 +8,7 @@ defmodule Words do
   def count(sentence) do
     sentence
     |> String.split(~r/[:!&@$%^,_\s]/, trim: true)
-    |> Enum.map(&String.downcase(&1))
+    |> Enum.map(&String.downcase/1)
     |> Enum.reduce(%{}, &do_count/2)
   end
   
