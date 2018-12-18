@@ -12,11 +12,5 @@ defmodule Words do
     |> Enum.reduce(%{}, &do_count/2)
   end
   
-
-  def do_count(x, acc) do
-    cond do
-      acc[x] == nil -> Map.put_new(acc, x, 1)
-      true -> Map.put(acc, x, acc[x] + 1)
-    end
-  end
+  defp do_count(x, acc), do: Map.update(acc, x, 1, &(&1 + 1))
 end
