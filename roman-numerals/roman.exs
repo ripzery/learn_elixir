@@ -25,8 +25,7 @@ defmodule Roman do
   def numerals(number) do
     number
     |> decompose
-    |> Enum.map(&convert/1)
-    |> Enum.join
+    |> Enum.map_join(&convert/1)
   end
 
    @doc """
@@ -59,7 +58,7 @@ defmodule Roman do
     end
   end
 
-  defp do_convert(number, %{key: alphabet_key, value: alphabet_value} = base_alphabet, first_number) when first_number > 5 do
+  defp do_convert(number, %{key: alphabet_key, value: alphabet_value}, first_number) when first_number > 5 do
     alphabet_value <> do_convert(number - alphabet_key, find_base_alphabet(number - alphabet_key), first_number - 5)
   end
 
