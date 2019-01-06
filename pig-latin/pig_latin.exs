@@ -26,24 +26,36 @@ defmodule PigLatin do
     end
   end
 
+  defguardp is_vowel(first) when first in @vowels
+
+  defguardp is_not_vowel(first) when first not in @vowels
+
   # Start with x and follows by a consonant
-  defp do_translate(<< ?x, consonant :: binary-size(1), rest :: binary >>) when consonant not in @vowels, do: "x" <> consonant <> rest <> "ay"
+  defp do_translate(<< ?x, consonant :: binary-size(1), rest :: binary >>) when is_not_vowel(consonant), 
+  do: "x" <> consonant <> rest <> "ay"
 
   # Start with y and follows by a consonant
-  defp do_translate(<< ?y, consonant :: binary-size(1), rest :: binary >>) when consonant not in @vowels, do: "y" <> consonant <> rest <> "ay"
+  defp do_translate(<< ?y, consonant :: binary-size(1), rest :: binary >>) when is_not_vowel(consonant), 
+  do: "y" <> consonant <> rest <> "ay"
 
   # Start with a consonant and follows by "qu"
-  defp do_translate(<< consonant :: binary-size(1), ?q, ?u, rest :: binary >>) when consonant not in @vowels, do: do_translate(rest <> consonant <> "qu")
+  defp do_translate(<< consonant :: binary-size(1), ?q, ?u, rest :: binary >>) when is_not_vowel(consonant), 
+  do: do_translate(rest <> consonant <> "qu")
 
   # Start with a consonant and follows by "y"
-  defp do_translate(<< consonant :: binary-size(1), ?y, rest :: binary >>) when consonant not in @vowels, do: do_translate("y" <> rest <> consonant)
+  defp do_translate(<< consonant :: binary-size(1), ?y, rest :: binary >>) when is_not_vowel(consonant), 
+  do: do_translate("y" <> rest <> consonant)
 
   # Start with qu and follows by any
-  defp do_translate(<< ?q, ?u, rest :: binary >>), do: do_translate(rest <> "qu")
+  defp do_translate(<< ?q, ?u, rest :: binary >>), 
+  do: do_translate(rest <> "qu")
 
   # Start with a consonant and follows by any
-  defp do_translate(<< consonant :: binary-size(1), rest :: binary >>) when consonant not in @vowels, do: do_translate(rest <> consonant)
+  defp do_translate(<< consonant :: binary-size(1), rest :: binary >>) when is_not_vowel(consonant), 
+  do: do_translate(rest <> consonant)
 
   # Start with a vowel and follows by any
-  defp do_translate(<< vowel :: binary-size(1), rest :: binary >>) when vowel in @vowels, do: vowel <> rest <> "ay"
+  defp do_translate(<< vowel :: binary-size(1), rest :: binary >>) when is_vowel(vowel), 
+  do: vowel <> rest <> "ay"
+
 end
